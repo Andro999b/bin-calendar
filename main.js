@@ -38,10 +38,10 @@ function render(model, mode = 10) {
     //form header
     let header = Array.from(
         new Array(7),
-        (v, x) => `<div class="month__weak-header-day-num">${(1 + x).toString(mode)}</div>`
+        (v, x) => `<div class="month__weak-header-day-num">${toStr(1 + x, mode)}</div>`
     ).join('');
     //set year
-    document.getElementById("year").textContent = model.year.toString(mode)
+    document.getElementById("year").textContent = toStr(model.year, mode)
     //clear grid
     let grid = document.getElementById("month-grid")
     while (grid.firstChild) grid.removeChild(grid.firstChild)
@@ -62,7 +62,7 @@ function render(model, mode = 10) {
             (v, x) => {
                 let day = x + 1;
                 let curDay = monthData.getMonth() == nowMonth && day == nowDay ? 'month__day_current' : '';
-                return `<div class="month__day ${curDay}">${day.toString(mode)}</div>`
+                return `<div class="month__day ${curDay}">${toStr(day, mode)}</div>`
             }
         ).join('');
 
@@ -70,12 +70,24 @@ function render(model, mode = 10) {
         let el = document.createElement("div")
         el.className = "month"
         el.innerHTML = `
-        <div class="month__title">${(monthData.getMonth() + 1).toString(mode)}</div>
+        <div class="month__title">${toStr(monthData.getMonth() + 1, mode)}</div>
         <div class="month__weak-header">${header}</div>
         <div class="month__days">${days}</div>`
 
         return el;
     }
+}
+
+function toStr(num, mode) {
+    let str = num.toString(mode);
+
+    if(str.length < 2)
+        str = 0 + str;
+
+    if(mode == 16)
+        str = "0x" + str;
+
+    return str;
 }
 
 const model = getCalendarModel();
