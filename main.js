@@ -1,7 +1,4 @@
 "use strict";
-const RED_DATES = {// month starts from 0
-    8: new Set([9, 13])
-}
 
 class MonthData {
     constructor(year, month) {
@@ -24,23 +21,27 @@ class MonthData {
 function getCalendarModel() {
     let year = new Date().getFullYear()
     let monthes = Array.from(new Array(12), (v, i) => new MonthData(year, i))
-    let daysInMonths = [31, (year % 4 == 0 ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; 
+
+    const RED_DATES = {// month starts from 0
+        8: new Set([9, 13])
+    }
+
+    let DAYS_IN_MONTHS = [31, (year % 4 == 0 ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     return {
         year,
         monthes,
         getDaysInMonth(month) {
-            return daysInMonths[month]
+            return DAYS_IN_MONTHS[month]
+        },
+        isRedDate(month, day) {
+            if (RED_DATES[month]) {
+                return RED_DATES[month].has(day);
+            }
+
+            return false;
         }
     }
-}
-
-function isRedDate(model, month, day) {
-    if(RED_DATES[month]) {
-        return RED_DATES[month].has(day);
-    }
-
-    return false;
 }
 
 function render(model, mode = 10) {
@@ -63,6 +64,7 @@ function render(model, mode = 10) {
     }
 
     function createMonthNode(monthData) {
+        let month = monthData.getMonth();
         //form days
         let days = Array.from(
             new Array(monthData.getFirstDayOfWeek()),
@@ -70,11 +72,11 @@ function render(model, mode = 10) {
         ).join('');
 
         days += Array.from(
-            new Array(model.getDaysInMonth(monthData.getMonth())),
+            new Array(model.getDaysInMonth(month)),
             (v, x) => {
                 let day = x + 1;
-                let classes = monthData.getMonth() == nowMonth && day == nowDay ? 'month__day_current' : '';
-                if(isRedDate(model, monthData.getMonth(), day))
+                let classes = month == nowMonth && day == nowDay ? 'month__day_current' : '';
+                if (model.isRedDate(month, day))
                     classes += ' month__day_red'
                 return `<div class="month__day ${classes}">${toStr(day, mode)}</div>`
             }
@@ -84,7 +86,7 @@ function render(model, mode = 10) {
         let el = document.createElement("div")
         el.className = "month mode-" + mode
         el.innerHTML = `
-        <div class="month__title">${toStr(monthData.getMonth() + 1, mode)}</div>
+        <div class="month__title">${toStr(month + 1, mode)}</div>
         <div class="month__weak-header">${header}</div>
         <div class="month__days">${days}</div>`
 
@@ -95,10 +97,10 @@ function render(model, mode = 10) {
 function toStr(num, mode) {
     let str = num.toString(mode);
 
-    if(str.length < 2)
+    if (str.length < 2)
         str = 0 + str;
 
-    if(mode == 16)
+    if (mode == 16)
         str = "0x" + str;
 
     return str;
