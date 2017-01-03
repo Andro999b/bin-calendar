@@ -13,7 +13,7 @@ html {
 }
 
 .header {
-    padding: 0 1.2rem;
+    padding: 0 0.6rem;
 }
 
 .switcher, .switcher:visited, .switcher:hover {
@@ -37,7 +37,7 @@ html {
 
 .month {
     flex: 1;
-    padding: 0 1.2rem;
+    padding: 0 0.6rem;
     box-sizing: border-box;
 }
 
@@ -59,9 +59,6 @@ html {
     box-sizing: border-box;
 }
 
-.mode-2 .month__weak-header-day-num, .mode-2 .month__day {
-    font-size: 0.8rem;
-}
 
 .month__days {
     display: flex;
@@ -78,6 +75,7 @@ html {
     color: black;
 }
 
+.month__day.month__day_red,
 .month__day:nth-child(7n), 
 .month__day:nth-child(7n-1),
 .month__weak-header-day-num:nth-child(6),
@@ -91,6 +89,11 @@ html {
     border-left: 2px solid white;
 }
 
+.month__day.month__day_red {
+    border: 2px solid red;
+}
+
+.month__day.month__day_red.month__day_current,
 .month__day:nth-child(7n).month__day_current,
 .month__day:nth-child(7n-1).month__day_current {
     background: red;
@@ -100,12 +103,14 @@ html {
 @media (min-width: 20rem) {
     .month {
         min-width: 100%;
+        font-size: 0.8rem;
     }
 }
 
 @media (min-width: 40rem) {
     .month {
         min-width: 50%;
+        font-size: 1rem;
     }
 
     .switchers {
@@ -113,15 +118,17 @@ html {
     }
 }
 
-@media (min-width: 60rem) {
+@media (min-width: 70rem) {
     .month {
         min-width: 33%;
     }
 }
 
-@media (min-width: 80rem) {
+
+@media (min-width: 90rem) {
     .month {
         min-width: 25%;
     }
 }
+
 

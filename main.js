@@ -2,16 +2,12 @@
 class MonthData {
     constructor(year, month) {
         this.month = month % 12;
-        this.year = year;
 
         let firstDay = new Date(year, this.month, 1)
 
         this.firstDayOfWeek = firstDay.getDay() - 1
         if (this.firstDayOfWeek < 0)
             this.firstDayOfWeek = 7 + this.firstDayOfWeek
-    }
-    getDaysInMonth() {
-        return [31, (this.year % 4 == 0 ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][this.month]
     }
     getFirstDayOfWeek() {
         return this.firstDayOfWeek;
@@ -24,11 +20,22 @@ class MonthData {
 function getCalendarModel() {
     let year = new Date().getFullYear()
     let monthes = Array.from(new Array(12), (v, i) => new MonthData(year, i))
+    let daysInMonths = [31, (year % 4 == 0 ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; 
 
     return {
         year,
-        monthes
+        monthes,
+        getDaysInMonth(month) {
+            return daysInMonths[month]
+        }
     }
+}
+
+function isRedDate(model, month, day) {
+    for(let i = 0; i < month; i++)
+        day += model.getDaysInMonth(i);
+
+    return day == 256;
 }
 
 function render(model, mode = 10) {
@@ -58,11 +65,13 @@ function render(model, mode = 10) {
         ).join('');
 
         days += Array.from(
-            new Array(monthData.getDaysInMonth()),
+            new Array(model.getDaysInMonth(monthData.getMonth())),
             (v, x) => {
                 let day = x + 1;
-                let curDay = monthData.getMonth() == nowMonth && day == nowDay ? 'month__day_current' : '';
-                return `<div class="month__day ${curDay}">${toStr(day, mode)}</div>`
+                let classes = monthData.getMonth() == nowMonth && day == nowDay ? 'month__day_current' : '';
+                if(isRedDate(model, monthData.getMonth(), day))
+                    classes += ' month__day_red'
+                return `<div class="month__day ${classes}">${toStr(day, mode)}</div>`
             }
         ).join('');
 
@@ -96,8 +105,6 @@ document.getElementById("bin").addEventListener("click", e => render(model, 2))
 document.getElementById("oct").addEventListener("click", e => render(model, 8))
 document.getElementById("dec").addEventListener("click", e => render(model, 10))
 document.getElementById("hex").addEventListener("click", e => render(model, 16))
-
-console.log(window.location.hash);
 
 switch (window.location.hash) {
     case "#dec": render(model, 10); break;
