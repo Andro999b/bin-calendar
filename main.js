@@ -38,8 +38,8 @@ function render(model, mode = 10) {
     //form header
     let header = Array.from(
         new Array(7),
-        (v, x) => `<div class="month__weak-header-day-num">${(1+x).toString(mode)}</div>`
-        ).join('');
+        (v, x) => `<div class="month__weak-header-day-num">${(1 + x).toString(mode)}</div>`
+    ).join('');
     //set year
     document.getElementById("year").textContent = model.year.toString(mode)
     //clear grid
@@ -55,7 +55,7 @@ function render(model, mode = 10) {
         let days = Array.from(
             new Array(monthData.getFirstDayOfWeek()),
             (v, x) => '<div class="month__day"></div>'
-            ).join('');
+        ).join('');
 
         days += Array.from(
             new Array(monthData.getDaysInMonth()),
@@ -64,8 +64,8 @@ function render(model, mode = 10) {
                 let curDay = monthData.getMonth() == nowMonth && day == nowDay ? 'month__day_current' : '';
                 return `<div class="month__day ${curDay}">${day.toString(mode)}</div>`
             }
-            ).join('');
-        
+        ).join('');
+
         //create el
         let el = document.createElement("div")
         el.className = "month"
@@ -85,4 +85,13 @@ document.getElementById("oct").addEventListener("click", e => render(model, 8))
 document.getElementById("dec").addEventListener("click", e => render(model, 10))
 document.getElementById("hex").addEventListener("click", e => render(model, 16))
 
-render(model)
+console.log(window.location.hash);
+
+switch (window.location.hash) {
+    case "#dec": render(model, 10); break;
+    case "#hex": render(model, 16); break;
+    case "#oct": render(model, 8); break;
+    case "#bin":
+    default:
+        render(model, 2);
+}
