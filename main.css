@@ -43,20 +43,20 @@ html {
 
 .month__title {
     text-align: center;
-    color: chartreuse;
+    color: forestgreen;
     font-weight: 700;
     padding: 0.7rem 0;
 }
 
 .month__weak-header {
     display: flex;
-    border-bottom: 2px solid white;
 }
 
 .month__weak-header-day-num, .month__day {
     width: 14.285714285714286%;
     text-align: center;
     box-sizing: border-box;
+    line-height: 1.4rem;
 }
 
 
@@ -70,34 +70,46 @@ html {
     color: orange;
 }
 
-.month__day.month__day_current {
-    background: orange;
-    color: black;
-}
-
+/*weekends*/
 .month__day.month__day_red,
 .month__day:nth-child(7n), 
 .month__day:nth-child(7n-1),
 .month__weak-header-day-num:nth-child(6),
 .month__weak-header-day-num:nth-child(7) {
-    color: red;
-    font-weight: 700;
+    color: crimson;
 }
-
+/*vertical line*/
 .month__day:nth-child(7n-1),
 .month__weak-header-day-num:nth-child(6) {
     border-left: 2px solid white;
 }
-
-.month__day.month__day_red {
-    border: 2px solid red;
+/*horizontaal line*/
+.month__day {
+    border-top: 2px solid white;
 }
 
+.month__day:nth-child(n+8) {
+     border-top: none;
+}
+
+.month__day.month__day_red {
+    border: none;
+    box-shadow: inset 0 0 0 2px crimson;/*make "border" using inset shadow*/
+}
+
+/* invert background and color */
 .month__day.month__day_red.month__day_current,
 .month__day:nth-child(7n).month__day_current,
 .month__day:nth-child(7n-1).month__day_current {
-    background: red;
+    background: crimson;
     color: black;
+    font-weight: 700;
+}
+
+.month__day.month__day_current {
+    background: orange;
+    color: black;
+    font-weight: 700;
 }
 
 @media (min-width: 20rem) {
