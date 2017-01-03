@@ -68,7 +68,7 @@ function render(model, mode = 10) {
 
         //create el
         let el = document.createElement("div")
-        el.className = "month"
+        el.className = "month mode-" + mode
         el.innerHTML = `
         <div class="month__title">${toStr(monthData.getMonth() + 1, mode)}</div>
         <div class="month__weak-header">${header}</div>

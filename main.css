@@ -59,6 +59,10 @@ html {
     box-sizing: border-box;
 }
 
+.mode-2 .month__weak-header-day-num, .mode-2 .month__day {
+    font-size: 0.8rem;
+}
+
 .month__days {
     display: flex;
     flex-wrap: wrap;
