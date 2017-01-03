@@ -105,7 +105,7 @@ html {
 
 @media (min-width: 40rem) {
     .month {
-        min-width: 33%;
+        min-width: 50%;
     }
 
     .switchers {
@@ -114,6 +114,12 @@ html {
 }
 
 @media (min-width: 60rem) {
+    .month {
+        min-width: 33%;
+    }
+}
+
+@media (min-width: 80rem) {
     .month {
         min-width: 25%;
     }
