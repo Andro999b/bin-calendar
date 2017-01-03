@@ -1,4 +1,8 @@
 "use strict";
+const RED_DATES = {// month starts from 0
+    8: new Set([9, 13])
+}
+
 class MonthData {
     constructor(year, month) {
         this.month = month % 12;
@@ -32,10 +36,11 @@ function getCalendarModel() {
 }
 
 function isRedDate(model, month, day) {
-    for(let i = 0; i < month; i++)
-        day += model.getDaysInMonth(i);
+    if(RED_DATES[month]) {
+        return RED_DATES[month].has(day);
+    }
 
-    return day == 256;
+    return false;
 }
 
 function render(model, mode = 10) {
